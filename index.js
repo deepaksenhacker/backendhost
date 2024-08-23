@@ -1,14 +1,32 @@
-import express from 'express'
-const app = express()
-const port = process.env.PORT || 3000
+import express from 'express';
+import dotenv from 'dotenv';
+import cors from 'cors';
+import Connection from './database/conn.js';
+dotenv.config();
 
-app.get('/', (req, res) => res.send('Hello World!'))
-app.get('/hi',(req,res)=>{
-    res.json({msg:'hi deepak'});
+import auth from './routes/auth.js'
+
+
+import posts from './routes/posts.js'
+
+Connection();
+
+const app = express();
+const port =process.env.PORT || 4000;
+app.use(express.json());
+
+app.use(cors());
+app.use('/auth',auth);
+app.use('/posts',posts)
+
+
+
+app.get('/',(req,res)=>{
+    res.send('Hey ');
 })
-app.get('/data',(req,res)=>{
-    res.json({data : 'data is here'})
-})
+
+app.listen(port, () => console.log(`Example app listening on port ${process.env.VITE_API_URL}`));
 
 
-app.listen(port, () => console.log(`Example app listening on port ${port}!`))
+
+export default app;
