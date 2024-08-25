@@ -161,7 +161,7 @@ router.get('/view/post/:id', async(req,res)=>{
 router.get('/view/all',async(req,res)=>{ 
     
     try {
-        const allposts=await Post.find({}).sort({date:-1}).populate('user');
+        const allposts=await Post.find({}).populate('user').sort({date:-1});
         
         res.json({allposts});
 
