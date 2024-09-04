@@ -145,6 +145,26 @@ router.get('/user/posts',fetchUser,async(req,res)=>{
         }
 })
 
+router.put('/post/:post/like',fetchUser,async(req,res)=>{
+    const postid = req.params.post;
+
+    try
+    {
+        const post = await Post.findById({_id: postid});
+        const user = req.userId
+       
+        
+    const upadated = await Post.updateOne({_id : postid},{$push :{likes : user}});
+         
+        res.json({upadated});
+
+    }
+    catch(error){
+        console.log(error);
+        res.json({error :'error'});
+    }
+})
+
 router.get('/view/post/:id', async(req,res)=>{
     const postid = req.params.id;
   try {
