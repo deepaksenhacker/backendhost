@@ -152,15 +152,16 @@ router.put('/post/:post/like',fetchUser,async(req,res)=>{
     {
         const post = await Post.findById({_id: postid});
         const user = req.userId
-        const isLiked= post.likes.indexOf(user);
+        const isLiked= post.likes.includes(user);
+        const index = post.likes.indexOf(user)
         if(isLiked){
-            console.log('not liked')   
+            post.likes.splice(index,1);
         }
-
-    const upadated = await Post.updateOne({_id : postid},{$push :{likes : user}});
-         
-        res.json({upadated});
-
+        else{
+            post.likes.push(user);
+        }
+        await post.save();
+        res.json({post})
     }
     catch(error){
         console.log(error);
